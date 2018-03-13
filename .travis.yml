@@ -9,7 +9,10 @@ dist: xenial
 
 cache:
   directories:
-    - $HOME/.cache/pip
+    - "$HOME/.cache/pip"
+    - "$HOME/.cargo"
+    - "target"
+    - ".tox"
 
 branches:
   only:
@@ -18,7 +21,11 @@ branches:
 
 script: tox
 
-install: pip install tox-travis
+install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+  - export PATH="$HOME/.cargo/bin:$PATH"
+  - rustc -V
+  - pip install tox-travis
 
 jobs:
   include:
@@ -36,22 +43,23 @@ jobs:
         - TOXENV=py37
     - <<: *test
       os: linux
-      install:
-        - pip install tox-travis
+      before_install:
         - sudo snap install ipfs
       services:
         - redis-server
         - docker
-      script:
+      before_script:
         - "/snap/bin/ipfs daemon --init --offline &>/dev/null &"
-        - tox
     - &wheel
       stage: build wheel and send to github releases
       services:
         - docker
       env:
         - PIP=pip
+        - CIBW_BUILD='cp37-*'
         - CIBW_SKIP='*-manylinux1_i686'
+        - CIBW_BEFORE_BUILD_LINUX='source .travis/install_cargo.sh'
+        - CIBW_ENVIRONMENT_LINUX='PATH="$HOME/.cargo/bin:$PATH"'
       script:
         - $PIP install cibuildwheel==0.10.0
         - cibuildwheel --output-dir wheelhouse
@@ -66,9 +74,14 @@ jobs:
           tags: true
     - <<: *wheel
       os: osx
+      osx_image: xcode9.2  # Last xcode with support for 10.12 (Sierra)
       language: generic
+      before_install: # See https://stackoverflow.com/a/49748494, avoid SSL error
+       - "curl https://bootstrap.pypa.io/get-pip.py | sudo python"
       env:
         - PIP=pip2
+        - CIBW_BUILD='cp37-*'
+        - CIBW_ENVIRONMENT_MACOS='MACOSX_DEPLOYMENT_TARGET=10.12'
 stages:
   - check
   - test
