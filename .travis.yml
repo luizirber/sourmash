@@ -1,6 +1,5 @@
 language: python
 python:
-  - "3.7"
   - "3.6"
   - "3.5"
   - "2.7"
@@ -9,7 +8,10 @@ dist: xenial
 
 cache:
   directories:
-    - $HOME/.cache/pip
+    - "$HOME/.cache/pip"
+    - "$HOME/.cargo"
+    - "target"
+    - ".tox"
 
 branches:
   only:
@@ -18,12 +20,18 @@ branches:
 
 script: tox
 
-install: pip install tox-travis
+install:
+  - curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+  - export PATH="$HOME/.cargo/bin:$PATH"
+  - rustc -V
+
+before_script: pip install tox-travis
 
 jobs:
   include:
     - &check
       stage: check # do a pre-screen to make sure this is even worth testing
+      python: 3.7
     - &test
       stage: test
     - <<: *test
@@ -36,22 +44,24 @@ jobs:
         - TOXENV=py37
     - <<: *test
       os: linux
-      install:
-        - pip install tox-travis
+      python: 3.7
+      before_install:
         - sudo snap install ipfs
+        - "/snap/bin/ipfs daemon --init --offline &>/dev/null &"
       services:
         - redis-server
         - docker
-      script:
-        - "/snap/bin/ipfs daemon --init --offline &>/dev/null &"
-        - tox
     - &wheel
       stage: build wheel and send to github releases
       services:
         - docker
       env:
         - PIP=pip
+        - CIBW_BUILD='cp37-*'
         - CIBW_SKIP='*-manylinux1_i686'
+        - CIBW_BEFORE_BUILD_LINUX='source .travis/install_cargo.sh'
+        - CIBW_ENVIRONMENT_LINUX='PATH="$HOME/.cargo/bin:$PATH"'
+      before_script: skip
       script:
         - $PIP install cibuildwheel==0.10.0
         - cibuildwheel --output-dir wheelhouse
@@ -66,9 +76,15 @@ jobs:
           tags: true
     - <<: *wheel
       os: osx
+      osx_image: xcode8
       language: generic
+      before_install:
+        - brew update
+        - brew outdated python || brew upgrade python
       env:
-        - PIP=pip2
+        - PIP=pip3
+        - CIBW_BUILD='cp37-*'
+        - CIBW_ENVIRONMENT_MACOS='MACOSX_DEPLOYMENT_TARGET=10.11'
 stages:
   - check
   - test
