@@ -42,8 +42,7 @@ jobs:
         - brew outdated python || brew upgrade python
       env:
         - TOXENV=py37
-    - &integration
-      stage: integration
+    - <<: *test
       os: linux
       dist: xenial
       python: '3.7'
@@ -83,5 +82,4 @@ jobs:
 stages:
   - check
   - test
-  - integration
   - wheel
