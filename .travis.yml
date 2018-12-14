@@ -11,7 +11,7 @@ cache:
 
 # only test master and tagged releases on push
 # # always test things that aren't pushes (like PRs)
-if: type != push OR branch = master OR branch =~ /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+if: type != push OR branch = master
 
 python:
   - "3.7"
