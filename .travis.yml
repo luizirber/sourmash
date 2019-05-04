@@ -73,7 +73,7 @@ jobs:
         - CIBW_ENVIRONMENT_LINUX='PATH="$HOME/.cargo/bin:$PATH"'
       before_script: skip
       script:
-        - sudo $PIP install cibuildwheel==0.10.1
+        - sudo $PIP install cibuildwheel==0.10.2
         - cibuildwheel --output-dir wheelhouse
       deploy:
         provider: releases
