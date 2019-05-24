@@ -81,7 +81,7 @@ jobs:
       deploy:
         provider: releases
         api_key:
-          secure: "FZmx00gL0m0uNVN8fpvqbUZSI20EEk4sgrEv4wpGFr8SFNwPb/VuizQRTapeF2AW9qzbfbUv4bR/+oSKu5jxvd+7+p9HlOZT285a5yfxay9OA8YUbpQz4a9J0CETOpxrA2wRRWBDqzjEWzLTGUquOhyBZn4cwujvA9syOdB7OSNKsB6ARc+zhqPeoMKc9JcjzwiEIh7tcCHoZ1epN5zyfsjqFEY8XlylHTU/WSI3SS9KIGuBqWf6/haoYD7BH+f2g56GMHvBEmGjk5cf/lrCpqiho7Z3fGgJcYf3fRWM3qSVUM9JyHUIqPS6oPZIp7zP40TztiK4Oeen4EpcS/KdoSdu5CjfgMYgF/qdlL28ntgnVYhcA/6IDSRg6V4H3b20qjsn3NlaNVdsSNCu3GzkvM/dtvp5I/41XcFCNqMOljMr3tRw2ZVo44/1vYW0FB0b0FjhjNcnMyTOQjSRR78zetdoorewTJdEmxthMieHIw1Mqzwg4e6JvsC30sh1uSaFq4FHrj2Fe6lAlgwPs1e9vx4w0Zs0kxxusNAdbBB8FH8paFuUEGjgT0Jo9KHOLtvRy+OU2OacQePuhG1kGBRvJz7O4/prAFLGWIW8tyZDnMCuv1vmk6YZd6ih3omkL178X94pjzavtlUip/ugF0NIwS5o+zucRow9txAX2jXgDCM="
+          secure: "QQAs4MABWzFAVaf85f4KlQ5eFl2/LXEk3yiuIbNNhwYNtWBjsQG9lkcPNE3ZeYJS+eM37xrob6Ca0ugIYdWtiFz++sXMpIr4UP4YWDcdnLct2fUXVKVspX4Rfk2Nqctjz9NmKUQaNNatFtE07dGHKIdKmX7wLzT9y05zeBLr+LwpPnsjbdnncxLczs+Ee+zKQutJiPveoM8S1UMmCDVr5JcIx1MgVc7+2XADiYtw52lXmDN4HnBk8e/NVNe4wuAK2uxYqiwqD5PZJ+/QkU0o+DJ7GXPksguiu6LGymKIkpQCRaF2SBJkgzUTkHB9OMmCPL+NAK/wxRB2H/jHoGOoFkh/Mh7kwKxGe731l/sKcVn6+lUEMvxiroPGA2jlgkPhaZItsDr4N+uVc1w5J6clgZ6RvnByVwsvzO5KzHR9tPW0r+p/CG3PFWiaC85+99RpZ+Nkx/zwHJf4LBjKkpUoBkGlhSEnJpZdxWPV32qHJer3wtl40Z/uesVwcSiMz6yBVuoc6R6NfIyUNeDIliEh6j/SF+aeR9E7G9p60ZBdW7tsFw1MAiS7H5g7SVSJOMc5CguKt7xyO8J8yeaM0c4MD+roWnIX0fYSp3V3wg7urkU2gc2SyAeg1xFOtrv/Tv8snO2S4ZgLUbilMwF7ZUzhf/hJzmfntKfxrqFitMc75Bw="
         file_glob: true
         file: wheelhouse/sourmash*.whl
         skip_cleanup: true
