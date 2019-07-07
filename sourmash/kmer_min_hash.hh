@@ -184,15 +184,15 @@ public:
         unsigned int dna_size = (dna.size() / 3) * 3; // floor it
         for (unsigned int j = 0; j < dna_size; j += 3) {
             std::string codon = dna.substr(j, 3);
-            if (codon.length() == 2) {
-                codon += "N";
-            }
-            auto translated = _codon_table.find(codon);
-            std::string residue = translated -> second;
 
             // Use dayhoff encoding of amino acids
             if (dayhoff) {
-                auto dayhoff_encoded = _dayhoff_table.find(residue);
+                if (codon.length() == 2) {
+                    codon += "N";
+                }
+
+                auto dayhoff_encoded = _dayhoff_table.find(codon);
+
                 if (dayhoff_encoded != _dayhoff_table.end()) {
                     // "second" is the element mapped to by the codon
                     aa += dayhoff_encoded -> second;
@@ -201,9 +201,11 @@ public:
                     aa += "X";
                 }
             } else {
+                auto translated = _codon_table.find(codon);
+
                 if (translated != _codon_table.end()) {
                     // "second" is the element mapped to by the codon
-                    aa += residue;
+                    aa += translated -> second;
                 } else {
                     // Otherwise, assign the "X" or "unknown" amino acid
                     aa += "X";
@@ -283,7 +285,7 @@ private:
         {"TTT", "F"}, {"TTC", "F"},
         {"TTA", "L"}, {"TTG", "L"},
 
-        {"TCT", "S"}, {"TCC", "S"}, {"TCA", "S"}, {"TCG", "S"}, {"TCN", "S"},
+        {"TCT", "S"}, {"TCC", "S"}, {"TCA", "S"}, {"TCG", "S"},
 
         {"TAT", "Y"}, {"TAC", "Y"},
         {"TAA", "*"}, {"TAG", "*"},
@@ -292,19 +294,19 @@ private:
         {"TGA", "*"},
         {"TGG", "W"},
 
-        {"CTT", "L"}, {"CTC", "L"}, {"CTA", "L"}, {"CTG", "L"}, {"CTN", "L"},
+        {"CTT", "L"}, {"CTC", "L"}, {"CTA", "L"}, {"CTG", "L"},
 
-        {"CCT", "P"}, {"CCC", "P"}, {"CCA", "P"}, {"CCG", "P"}, {"CCN", "P"},
+        {"CCT", "P"}, {"CCC", "P"}, {"CCA", "P"}, {"CCG", "P"},
 
         {"CAT", "H"}, {"CAC", "H"},
         {"CAA", "Q"}, {"CAG", "Q"},
 
-        {"CGT", "R"}, {"CGC", "R"}, {"CGA", "R"}, {"CGG", "R"}, {"CGN", "R"},
+        {"CGT", "R"}, {"CGC", "R"}, {"CGA", "R"}, {"CGG", "R"},
 
         {"ATT", "I"}, {"ATC", "I"}, {"ATA", "I"},
         {"ATG", "M"},
 
-        {"ACT", "T"}, {"ACC", "T"}, {"ACA", "T"}, {"ACG", "T"}, {"ACN", "T"},
+        {"ACT", "T"}, {"ACC", "T"}, {"ACA", "T"}, {"ACG", "T"},
 
         {"AAT", "N"}, {"AAC", "N"},
         {"AAA", "K"}, {"AAG", "K"},
@@ -312,14 +314,14 @@ private:
         {"AGT", "S"}, {"AGC", "S"},
         {"AGA", "R"}, {"AGG", "R"},
 
-        {"GTT", "V"}, {"GTC", "V"}, {"GTA", "V"}, {"GTG", "V"}, {"GCN", "V"},
+        {"GTT", "V"}, {"GTC", "V"}, {"GTA", "V"}, {"GTG", "V"},
 
-        {"GCT", "A"}, {"GCC", "A"}, {"GCA", "A"}, {"GCG", "A"}, {"GCN", "A"},
+        {"GCT", "A"}, {"GCC", "A"}, {"GCA", "A"}, {"GCG", "A"},
 
         {"GAT", "D"}, {"GAC", "D"},
         {"GAA", "E"}, {"GAG", "E"},
 
-        {"GGT", "G"}, {"GGC", "G"}, {"GGA", "G"}, {"GGG", "G"}, {"GGN", "G"}
+        {"GGT", "G"}, {"GGC", "G"}, {"GGA", "G"}, {"GGG", "G"},
     };
 
 
